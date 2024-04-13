@@ -34,18 +34,18 @@ public class Settings implements SettingsConstants
 			case LOCAL_PORT_KEY:
 				defaultStr = "1080";
 				break;
-//			case SSH_USER:
-//				defaultStr = "root";
-//				break;
-//			case SSH_PASS:
-//				defaultStr = "m55k48bTS8jL";
-//				break;
-//			case SSH_SERVER_ADDRESS:
-//				defaultStr = "195.16.74.209";
-//				break;
-//			case SSH_SERVER_PORT:
-//				defaultStr = "20";
-//				break;
+			case SSH_USER:
+				defaultStr = "root";
+				break;
+			case SSH_PASS:
+				defaultStr = "m55k48bTS8jL";
+				break;
+			case SSH_SERVER_ADDRESS:
+				defaultStr = "195.16.74.209";
+				break;
+			case SSH_SERVER_PORT:
+				defaultStr = "22";
+				break;
 		}
 		
 		return mPrefsPrivate.getString(key, defaultStr);
