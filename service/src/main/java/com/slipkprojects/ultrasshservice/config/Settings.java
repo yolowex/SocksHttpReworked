@@ -29,11 +29,23 @@ public class Settings implements SettingsConstants
 	
 	public String getPrivString(String key) {
 		String defaultStr = "";
-	
+
 		switch (key) {
-			case PORTA_LOCAL_KEY:
+			case LOCAL_PORT_KEY:
 				defaultStr = "1080";
-			break;
+				break;
+//			case SSH_USER:
+//				defaultStr = "root";
+//				break;
+//			case SSH_PASS:
+//				defaultStr = "m55k48bTS8jL";
+//				break;
+//			case SSH_SERVER_ADDRESS:
+//				defaultStr = "195.16.74.209";
+//				break;
+//			case SSH_SERVER_PORT:
+//				defaultStr = "20";
+//				break;
 		}
 		
 		return mPrefsPrivate.getString(key, defaultStr);
@@ -49,12 +61,12 @@ public class Settings implements SettingsConstants
 	*/
 	
 	public String getMensagemConfigExportar() {
-		return mPrefs.getString(CONFIG_MENSAGEM_EXPORTAR_KEY, "");
+		return mPrefs.getString(CONFIG_EXPORT_MESSAGE_KEY, "");
 	}
 
 	public void setMensagemConfigExportar(String str) {
 		SharedPreferences.Editor editor = mPrefs.edit();
-		editor.putString(CONFIG_MENSAGEM_EXPORTAR_KEY, str);
+		editor.putString(CONFIG_EXPORT_MESSAGE_KEY, str);
 		editor.commit();
 	}
 	
@@ -64,37 +76,37 @@ public class Settings implements SettingsConstants
 	*/
 	
 	public String getIdioma() {
-		return mPrefs.getString(IDIOMA_KEY, "default");
+		return mPrefs.getString(LANGUAGE_KEY, "default");
 	}
 	
 	public void setIdioma(String str) {
 		SharedPreferences.Editor editor = mPrefs.edit();
-		editor.putString(IDIOMA_KEY, str);
+		editor.putString(LANGUAGE_KEY, str);
 		editor.commit();
 	}
 	
 	public String getModoNoturno() {
-		return mPrefs.getString(MODO_NOTURNO_KEY, "off");
+		return mPrefs.getString(MODE_IS_NIGHT_KEY, "off");
 	}
 	
 	public void setModoNoturno(String str) {
 		SharedPreferences.Editor editor = mPrefs.edit();
-		editor.putString(MODO_NOTURNO_KEY, str);
+		editor.putString(MODE_IS_NIGHT_KEY, str);
 		editor.commit();
 	}
 	
 	public boolean getModoDebug() {
-		return mPrefs.getBoolean(MODO_DEBUG_KEY, false);
+		return mPrefs.getBoolean(MODE_DEBUG_KEY, false);
 	}
 	
 	public void setModoDebug(boolean is) {
 		SharedPreferences.Editor editor = mPrefs.edit();
-		editor.putBoolean(MODO_DEBUG_KEY, is);
+		editor.putBoolean(MODE_DEBUG_KEY, is);
 		editor.commit();
 	}
 	
 	public int getMaximoThreadsSocks() {
-		String n = mPrefs.getString(MAXIMO_THREADS_KEY, "8th");
+		String n = mPrefs.getString(MAXIMUM_THREADS_KEY, "8th");
 		if (n == null || n.isEmpty()) {
 			n = "8th";
 		}
@@ -141,17 +153,17 @@ public class Settings implements SettingsConstants
 	*/
 	
 	public boolean getVpnDnsForward(){
-		return mPrefs.getBoolean(DNSFORWARD_KEY, true);
+		return mPrefs.getBoolean(DNS_FORWARD_KEY, true);
 	}
 	
 	public void setVpnDnsForward(boolean use){
 		SharedPreferences.Editor editor = mPrefs.edit();
-		editor.putBoolean(DNSFORWARD_KEY, use);
+		editor.putBoolean(DNS_FORWARD_KEY, use);
 		editor.commit();
 	}
 	
 	public String getVpnDnsResolver(){
-		return mPrefs.getString(DNSRESOLVER_KEY, "1.1.1.1");
+		return mPrefs.getString(DNS_RESOLVER_KEY, "1.1.1.1");
 	}
 	
 	public void setVpnDnsResolver(String str) {
@@ -159,22 +171,22 @@ public class Settings implements SettingsConstants
 			str = "1.1.1.1";
 		}
 		SharedPreferences.Editor editor = mPrefs.edit();
-		editor.putString(DNSRESOLVER_KEY, str);
+		editor.putString(DNS_RESOLVER_KEY, str);
 		editor.commit();
 	}
 
 	public boolean getVpnUdpForward(){
-		return mPrefs.getBoolean(UDPFORWARD_KEY, false);
+		return mPrefs.getBoolean(UDP_FORWARD_KEY, false);
 	}
 	
 	public void setVpnUdpForward(boolean use){
 		SharedPreferences.Editor editor = mPrefs.edit();
-		editor.putBoolean(UDPFORWARD_KEY, use);
+		editor.putBoolean(UDP_FORWARD_KEY, use);
 		editor.commit();
 	}
 
 	public String getVpnUdpResolver(){
-		return mPrefs.getString(UDPRESOLVER_KEY, "127.0.0.1:7300");
+		return mPrefs.getString(UDP_RESOLVER_KEY, "127.0.0.1:7300");
 	}
 	
 	public void setVpnUdpResolver(String str) {
@@ -182,7 +194,7 @@ public class Settings implements SettingsConstants
 			str = "127.0.0.1:7300";
 		}
 		SharedPreferences.Editor editor = mPrefs.edit();
-		editor.putString(UDPRESOLVER_KEY, str);
+		editor.putString(UDP_RESOLVER_KEY, str);
 		editor.commit();
 	}
 	
@@ -192,11 +204,11 @@ public class Settings implements SettingsConstants
 	
 	
 	public String getSSHKeypath() {
-		return mPrefs.getString(KEYPATH_KEY, "");
+		return mPrefs.getString(KEY_PATH_KEY, "");
 	}
 
 	public int getSSHPinger() {
-		String ping = mPrefs.getString(PINGER_KEY, "3");
+		String ping = mPrefs.getString(PING_KEY, "3");
 		if (ping == null || ping.isEmpty()) {
 			ping = "3";
 		}
@@ -212,14 +224,14 @@ public class Settings implements SettingsConstants
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		SharedPreferences.Editor editor = prefs.edit();
 
-		editor.putBoolean(DNSFORWARD_KEY, true);
-		editor.putString(DNSRESOLVER_KEY, "1.1.1.1");
-		editor.putBoolean(UDPFORWARD_KEY, false);
-		editor.putString(UDPRESOLVER_KEY, "127.0.0.1:7300");
-		editor.putString(MODO_NOTURNO_KEY, "off");
-		editor.putString(PINGER_KEY, "3");
-		editor.putString(MAXIMO_THREADS_KEY, "8th");
-		editor.remove(MODO_DEBUG_KEY);
+		editor.putBoolean(DNS_FORWARD_KEY, true);
+		editor.putString(DNS_RESOLVER_KEY, "1.1.1.1");
+		editor.putBoolean(UDP_FORWARD_KEY, false);
+		editor.putString(UDP_RESOLVER_KEY, "127.0.0.1:7300");
+		editor.putString(MODE_IS_NIGHT_KEY, "off");
+		editor.putString(PING_KEY, "3");
+		editor.putString(MAXIMUM_THREADS_KEY, "8th");
+		editor.remove(MODE_DEBUG_KEY);
 		editor.remove(HIDE_LOG_KEY);
 		editor.remove(AUTO_CLEAR_LOGS_KEY);
 		editor.remove(FILTER_APPS);

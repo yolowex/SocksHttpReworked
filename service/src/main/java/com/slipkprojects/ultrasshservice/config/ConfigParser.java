@@ -1,19 +1,14 @@
 package com.slipkprojects.ultrasshservice.config;
 
 import android.content.Context;
-import java.io.File;
+
 import java.util.Properties;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.io.FileInputStream;
-import android.util.Log;
+
 import android.content.pm.PackageInfo;
 import java.util.Calendar;
-import android.widget.Toast;
-import java.util.Date;
-import java.text.ParseException;
-import java.text.DateFormat;
+
 import android.content.pm.PackageManager;
 import com.slipkprojects.ultrasshservice.logger.SkStatus;
 import com.slipkprojects.ultrasshservice.util.FileUtils;
@@ -22,17 +17,12 @@ import com.slipkprojects.ultrasshservice.R;
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
+
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import android.os.Build;
+
 import com.kimchangyoun.rootbeerFresh.RootBeer;
 import com.slipkprojects.ultrasshservice.util.securepreferences.crypto.Cryptor;
 import com.slipkprojects.ultrasshservice.util.securepreferences.model.SecurityConfig;
-import java.util.ArrayList;
 import com.slipkprojects.ultrasshservice.util.Cripto;
 
 /**
@@ -112,14 +102,14 @@ public class ConfigParser
 			
 
 			try {
-				String mServidor = mConfigFile.getProperty(Settings.SERVIDOR_KEY);
-				String mServidorPorta = mConfigFile.getProperty(Settings.SERVIDOR_PORTA_KEY);
-				String mUsuario = mConfigFile.getProperty(Settings.USUARIO_KEY);
-				String mSenha = mConfigFile.getProperty(Settings.SENHA_KEY);
-				int mPortaLocal = Integer.parseInt(mConfigFile.getProperty(Settings.PORTA_LOCAL_KEY));
+				String mServidor = mConfigFile.getProperty(Settings.SSH_SERVER_ADDRESS);
+				String mServidorPorta = mConfigFile.getProperty(Settings.SSH_SERVER_PORT);
+				String mUsuario = mConfigFile.getProperty(Settings.SSH_USER);
+				String mSenha = mConfigFile.getProperty(Settings.SSH_PASS);
+				int mPortaLocal = Integer.parseInt(mConfigFile.getProperty(Settings.LOCAL_PORT_KEY));
 				int mTunnelType = Settings.bTUNNEL_TYPE_SSH_DIRECT;
 				
-				String _tunnelType = mConfigFile.getProperty(Settings.TUNNELTYPE_KEY);
+				String _tunnelType = mConfigFile.getProperty(Settings.TUNNEL_TYPE_KEY);
 				if (!_tunnelType.isEmpty()) {
 					/**
 					* Mantêm compatibilidade
@@ -137,17 +127,17 @@ public class ConfigParser
 				}
 
 				String _proxyIp = mConfigFile.getProperty(Settings.PROXY_IP_KEY);
-				String _proxyPort = mConfigFile.getProperty(Settings.PROXY_PORTA_KEY);
+				String _proxyPort = mConfigFile.getProperty(Settings.PROXY_PORT_KEY);
 				prefsEdit.putString(Settings.PROXY_IP_KEY, _proxyIp != null ? _proxyIp : "");
-				prefsEdit.putString(Settings.PROXY_PORTA_KEY, _proxyPort != null ? _proxyPort : "");
+				prefsEdit.putString(Settings.PROXY_PORT_KEY, _proxyPort != null ? _proxyPort : "");
 
-				prefsEdit.putBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, !mConfigFile.getProperty(Settings.PROXY_USAR_DEFAULT_PAYLOAD).equals("1") ? false : true);
+				prefsEdit.putBoolean(Settings.USE_DEFAULT_PROXY_PAYLOAD, !mConfigFile.getProperty(Settings.USE_DEFAULT_PROXY_PAYLOAD).equals("1") ? false : true);
 				
 				String _customPayload = mConfigFile.getProperty(Settings.CUSTOM_PAYLOAD_KEY);
 				prefsEdit.putString(Settings.CUSTOM_PAYLOAD_KEY, _customPayload != null ? _customPayload : "");
 				
 				if (mIsProteger) {
-					prefsEdit.putString(Settings.CONFIG_MENSAGEM_KEY, msg != null ? msg : "");
+					prefsEdit.putString(Settings.CONFIG_MESSAGE_KEY, msg != null ? msg : "");
 					
 					new Settings(mContext)
 						.setModoDebug(false);
@@ -159,30 +149,30 @@ public class ConfigParser
 						prefsEdit.putBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false);
 				}
 				else {
-					prefsEdit.putString(Settings.CONFIG_MENSAGEM_KEY, "");
+					prefsEdit.putString(Settings.CONFIG_MESSAGE_KEY, "");
 					prefsEdit.putBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false);
 				}
 				
-				prefsEdit.putString(Settings.SERVIDOR_KEY, mServidor);
-				prefsEdit.putString(Settings.SERVIDOR_PORTA_KEY, mServidorPorta);
-				prefsEdit.putString(Settings.USUARIO_KEY, mUsuario);
-				prefsEdit.putString(Settings.SENHA_KEY, mSenha);
-				prefsEdit.putString(Settings.PORTA_LOCAL_KEY, Integer.toString(mPortaLocal));
+				prefsEdit.putString(Settings.SSH_SERVER_ADDRESS, mServidor);
+				prefsEdit.putString(Settings.SSH_SERVER_PORT, mServidorPorta);
+				prefsEdit.putString(Settings.SSH_USER, mUsuario);
+				prefsEdit.putString(Settings.SSH_PASS, mSenha);
+				prefsEdit.putString(Settings.LOCAL_PORT_KEY, Integer.toString(mPortaLocal));
 
-				prefsEdit.putInt(Settings.TUNNELTYPE_KEY, mTunnelType);
-				prefsEdit.putBoolean(Settings.CONFIG_PROTEGER_KEY, mIsProteger);
-				prefsEdit.putLong(Settings.CONFIG_VALIDADE_KEY, mValidade);
-				prefsEdit.putBoolean(Settings.BLOQUEAR_ROOT_KEY, isBloquearRoot);
+				prefsEdit.putInt(Settings.TUNNEL_TYPE_KEY, mTunnelType);
+				prefsEdit.putBoolean(Settings.CONFIG_PROTECT_KEY, mIsProteger);
+				prefsEdit.putLong(Settings.CONFIG_VALIDITY_KEY, mValidade);
+				prefsEdit.putBoolean(Settings.BLOCK_ROOT_KEY, isBloquearRoot);
 				
-				String _isDnsForward = mConfigFile.getProperty(Settings.DNSFORWARD_KEY);
+				String _isDnsForward = mConfigFile.getProperty(Settings.DNS_FORWARD_KEY);
 				boolean isDnsForward = _isDnsForward != null && _isDnsForward.equals("0") ? false : true;
-				String dnsResolver = mConfigFile.getProperty(Settings.DNSRESOLVER_KEY);
+				String dnsResolver = mConfigFile.getProperty(Settings.DNS_RESOLVER_KEY);
 				settings.setVpnDnsForward(isDnsForward);
 				settings.setVpnDnsResolver(dnsResolver);
 				
-				String _isUdpForward = mConfigFile.getProperty(Settings.UDPFORWARD_KEY);
+				String _isUdpForward = mConfigFile.getProperty(Settings.UDP_FORWARD_KEY);
 				boolean isUdpForward = _isUdpForward != null && _isUdpForward.equals("1") ? true : false;
-				String udpResolver = mConfigFile.getProperty(Settings.UDPRESOLVER_KEY);
+				String udpResolver = mConfigFile.getProperty(Settings.UDP_RESOLVER_KEY);
 				settings.setVpnUdpForward(isUdpForward);
 				settings.setVpnUdpResolver(udpResolver);
 				
@@ -228,38 +218,38 @@ public class ConfigParser
 			mConfigFile.setProperty(SETTING_VALIDADE, Long.toString(mValidade));
 			mConfigFile.setProperty("file.pedirLogin", mPedirSenha ? "1" : "0");
 
-			String server = prefs.getString(Settings.SERVIDOR_KEY, "");
-			String server_port = prefs.getString(Settings.SERVIDOR_PORTA_KEY, "");
+			String server = prefs.getString(Settings.SSH_SERVER_ADDRESS, "");
+			String server_port = prefs.getString(Settings.SSH_SERVER_PORT, "");
 			
 			if (mIsProteger && (server.isEmpty() || server_port.isEmpty())) {
 				throw new Exception();
 			}
 						
-			mConfigFile.setProperty(Settings.SERVIDOR_KEY, server);
-			mConfigFile.setProperty(Settings.SERVIDOR_PORTA_KEY, server_port);
-			mConfigFile.setProperty(Settings.USUARIO_KEY, prefs.getString(Settings.USUARIO_KEY, ""));
-			mConfigFile.setProperty(Settings.SENHA_KEY, prefs.getString(Settings.SENHA_KEY, ""));
-			mConfigFile.setProperty(Settings.PORTA_LOCAL_KEY, prefs.getString(Settings.PORTA_LOCAL_KEY, "1080"));
+			mConfigFile.setProperty(Settings.SSH_SERVER_ADDRESS, server);
+			mConfigFile.setProperty(Settings.SSH_SERVER_PORT, server_port);
+			mConfigFile.setProperty(Settings.SSH_USER, prefs.getString(Settings.SSH_USER, ""));
+			mConfigFile.setProperty(Settings.SSH_PASS, prefs.getString(Settings.SSH_PASS, ""));
+			mConfigFile.setProperty(Settings.LOCAL_PORT_KEY, prefs.getString(Settings.LOCAL_PORT_KEY, "1080"));
 
-			mConfigFile.setProperty(Settings.TUNNELTYPE_KEY, Integer.toString(prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT)));
+			mConfigFile.setProperty(Settings.TUNNEL_TYPE_KEY, Integer.toString(prefs.getInt(Settings.TUNNEL_TYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT)));
 			
-			mConfigFile.setProperty(Settings.DNSFORWARD_KEY, settings.getVpnDnsForward() ? "1" : "0");
-			mConfigFile.setProperty(Settings.DNSRESOLVER_KEY, settings.getVpnDnsResolver());
+			mConfigFile.setProperty(Settings.DNS_FORWARD_KEY, settings.getVpnDnsForward() ? "1" : "0");
+			mConfigFile.setProperty(Settings.DNS_RESOLVER_KEY, settings.getVpnDnsResolver());
 			
-			mConfigFile.setProperty(Settings.UDPFORWARD_KEY, settings.getVpnUdpForward() ? "1" : "0");
-			mConfigFile.setProperty(Settings.UDPRESOLVER_KEY, settings.getVpnUdpResolver());
+			mConfigFile.setProperty(Settings.UDP_FORWARD_KEY, settings.getVpnUdpForward() ? "1" : "0");
+			mConfigFile.setProperty(Settings.UDP_RESOLVER_KEY, settings.getVpnUdpResolver());
 			
 			mConfigFile.setProperty(Settings.PROXY_IP_KEY, prefs.getString(Settings.PROXY_IP_KEY, ""));
-			mConfigFile.setProperty(Settings.PROXY_PORTA_KEY, prefs.getString(Settings.PROXY_PORTA_KEY, ""));
+			mConfigFile.setProperty(Settings.PROXY_PORT_KEY, prefs.getString(Settings.PROXY_PORT_KEY, ""));
 
-			String isDefaultPayload = prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true) ? "1" : "0";
+			String isDefaultPayload = prefs.getBoolean(Settings.USE_DEFAULT_PROXY_PAYLOAD, true) ? "1" : "0";
 			String customPayload = prefs.getString(Settings.CUSTOM_PAYLOAD_KEY, "");
 						
 			if (mIsProteger && isDefaultPayload.equals("0") && customPayload.isEmpty()) {
 				throw new IOException();
 			}
 			
-			mConfigFile.setProperty(Settings.PROXY_USAR_DEFAULT_PAYLOAD, isDefaultPayload);
+			mConfigFile.setProperty(Settings.USE_DEFAULT_PROXY_PAYLOAD, isDefaultPayload);
 			mConfigFile.setProperty(Settings.CUSTOM_PAYLOAD_KEY, customPayload);
 
 		} catch(Exception e) {

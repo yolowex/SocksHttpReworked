@@ -1,52 +1,40 @@
 package com.slipkprojects.sockshttp;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.slipkprojects.sockshttp.R;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.app.DialogFragment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 import android.view.View;
 import android.content.Context;
 import android.support.v7.widget.SwitchCompat;
 import android.widget.CompoundButton;
 import com.slipkprojects.sockshttp.util.Utils;
-import android.util.Log;
+
 import android.widget.TextView;
 import android.support.v4.view.GravityCompat;
-import android.widget.EditText;
 import android.support.design.widget.TextInputEditText;
-import com.slipkprojects.sockshttp.DrawerLog;
 import android.support.v4.widget.DrawerLayout;
 import android.net.Uri;
 import android.widget.Button;
-import com.slipkprojects.sockshttp.SocksHttpApp;
-import android.widget.CheckBox;
 import android.support.v4.content.LocalBroadcastManager;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import com.slipkprojects.sockshttp.activities.ConfigGeralActivity;
-import android.view.LayoutInflater;
-import android.content.pm.PackageManager;
+
 import android.text.Html;
 import android.support.v7.app.AlertDialog;
-import android.content.pm.PackageInfo;
+
 import com.slipkprojects.ultrasshservice.util.SkProtect;
 import com.slipkprojects.ultrasshservice.logger.SkStatus;
-import android.content.ServiceConnection;
-import android.content.ComponentName;
-import android.os.IBinder;
+
 import android.widget.LinearLayout;
 import com.slipkprojects.sockshttp.fragments.ProxyRemoteDialogFragment;
-import android.annotation.TargetApi;
+
 import android.os.Build;
-import android.net.VpnService;
-import android.content.ActivityNotFoundException;
 import android.app.Activity;
 import com.slipkprojects.ultrasshservice.logger.ConnectionStatus;
 import android.os.Handler;
@@ -55,37 +43,28 @@ import com.slipkprojects.sockshttp.fragments.ClearConfigDialogFragment;
 import com.slipkprojects.sockshttp.activities.ConfigExportFileActivity;
 import com.slipkprojects.sockshttp.activities.ConfigImportFileActivity;
 import com.slipkprojects.ultrasshservice.config.Settings;
-import android.support.v7.app.ActionBarDrawerToggle;
+
 import android.os.PersistableBundle;
 import android.content.res.Configuration;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.widget.RadioGroup;
 import com.slipkprojects.ultrasshservice.config.ConfigParser;
-import android.support.v4.app.ActivityCompat;
+
 import android.content.DialogInterface;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelManagerHelper;
 import com.slipkprojects.ultrasshservice.LaunchVpn;
-import com.slipkprojects.sockshttp.activities.AboutActivity;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import com.slipkprojects.sockshttp.model.ViewFragment;
+
 import android.text.InputType;
 import android.widget.ImageButton;
 import java.io.IOException;
-import android.support.design.widget.NavigationView;
-import android.util.AttributeSet;
-import com.slipkprojects.sockshttp.util.GoogleFeedbackUtils;
+
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdListener;
 import com.slipkprojects.sockshttp.activities.BaseActivity;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelUtils;
-import android.text.TextUtils;
-import com.slipkprojects.sockshttp.preference.LocaleHelper;
+
 import android.support.annotation.Nullable;
-import android.widget.Spinner;
-import android.widget.ArrayAdapter;
 
 /**
  * Activity Principal
@@ -266,10 +245,10 @@ public class SocksHttpMainActivity extends BaseActivity
 		configMsgText = (TextView) findViewById(R.id.activity_mainMensagemConfigTextView);
 
 		// fix bugs
-		if (mConfig.getPrefsPrivate().getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+		if (mConfig.getPrefsPrivate().getBoolean(Settings.CONFIG_PROTECT_KEY, false)) {
 			if (mConfig.getPrefsPrivate().getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
-				inputPwUser.setText(mConfig.getPrivString(Settings.USUARIO_KEY));
-				inputPwPass.setText(mConfig.getPrivString(Settings.SENHA_KEY));
+				inputPwUser.setText(mConfig.getPrivString(Settings.SSH_USER));
+				inputPwPass.setText(mConfig.getPrivString(Settings.SSH_PASS));
 			}
 		}
 		else {
@@ -285,14 +264,14 @@ public class SocksHttpMainActivity extends BaseActivity
 		SharedPreferences prefs = mConfig.getPrefsPrivate();
 
 		boolean isRunning = SkStatus.isTunnelActive();
-		int tunnelType = prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT);
+		int tunnelType = prefs.getInt(Settings.TUNNEL_TYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT);
 		
 		setStarterButton(starterButton, this);
-		setPayloadSwitch(tunnelType, !prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true));
+		setPayloadSwitch(tunnelType, !prefs.getBoolean(Settings.USE_DEFAULT_PROXY_PAYLOAD, true));
 
 		String proxyStr = getText(R.string.no_value).toString();
 
-		if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+		if (prefs.getBoolean(Settings.CONFIG_PROTECT_KEY, false)) {
 			proxyStr = "*******";
 			proxyInputLayout.setEnabled(false);
 		}
@@ -300,7 +279,7 @@ public class SocksHttpMainActivity extends BaseActivity
 			String proxy = mConfig.getPrivString(Settings.PROXY_IP_KEY);
 
 			if (proxy != null && !proxy.isEmpty())
-				proxyStr = String.format("%s:%s", proxy, mConfig.getPrivString(Settings.PROXY_PORTA_KEY));
+				proxyStr = String.format("%s:%s", proxy, mConfig.getPrivString(Settings.PROXY_PORT_KEY));
 			proxyInputLayout.setEnabled(!isRunning);
 		} 
 
@@ -324,13 +303,13 @@ public class SocksHttpMainActivity extends BaseActivity
 		String msgText = "";
 		boolean enabled_radio = !isRunning;
 
-		if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+		if (prefs.getBoolean(Settings.CONFIG_PROTECT_KEY, false)) {
 			
 			if (prefs.getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
 				loginVisibility = View.VISIBLE;
 				
-				inputPwUser.setText(mConfig.getPrivString(Settings.USUARIO_KEY));
-				inputPwPass.setText(mConfig.getPrivString(Settings.SENHA_KEY));
+				inputPwUser.setText(mConfig.getPrivString(Settings.SSH_USER));
+				inputPwPass.setText(mConfig.getPrivString(Settings.SSH_PASS));
 				
 				inputPwUser.setEnabled(!isRunning);
 				inputPwPass.setEnabled(!isRunning);
@@ -339,14 +318,14 @@ public class SocksHttpMainActivity extends BaseActivity
 				//inputPwPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 			}
 			
-			String msg = mConfig.getPrivString(Settings.CONFIG_MENSAGEM_KEY);
+			String msg = mConfig.getPrivString(Settings.CONFIG_MESSAGE_KEY);
 			if (!msg.isEmpty()) {
 				msgText = msg.replace("\n", "<br/>");
 				msgVisibility = View.VISIBLE;
 			}
 			
 			if (mConfig.getPrivString(Settings.PROXY_IP_KEY).isEmpty() ||
-					mConfig.getPrivString(Settings.PROXY_PORTA_KEY).isEmpty()) {
+					mConfig.getPrivString(Settings.PROXY_PORT_KEY).isEmpty()) {
 				enabled_radio = false;
 			}
 		}
@@ -369,15 +348,15 @@ public class SocksHttpMainActivity extends BaseActivity
 		if (mainLayout != null && !isFinishing())
 			mainLayout.requestFocus();
 		
-		if (!prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-			if (payloadEdit != null && !prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true)) {
+		if (!prefs.getBoolean(Settings.CONFIG_PROTECT_KEY, false)) {
+			if (payloadEdit != null && !prefs.getBoolean(Settings.USE_DEFAULT_PROXY_PAYLOAD, true)) {
 				edit.putString(Settings.CUSTOM_PAYLOAD_KEY, payloadEdit.getText().toString());
 			}
 		}
 		else {
 			if (prefs.getBoolean(Settings.CONFIG_INPUT_PASSWORD_KEY, false)) {
-				edit.putString(Settings.USUARIO_KEY, inputPwUser.getEditableText().toString());
-				edit.putString(Settings.SENHA_KEY, inputPwPass.getEditableText().toString());
+				edit.putString(Settings.SSH_USER, inputPwUser.getEditableText().toString());
+				edit.putString(Settings.SSH_PASS, inputPwPass.getEditableText().toString());
 			}
 		}
 
@@ -427,7 +406,7 @@ public class SocksHttpMainActivity extends BaseActivity
 
 		customPayloadSwitch.setChecked(isCustomPayload);
 
-		if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+		if (prefs.getBoolean(Settings.CONFIG_PROTECT_KEY, false)) {
 			payloadEdit.setEnabled(false);
 			
 			if (mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY).isEmpty()) {
@@ -473,7 +452,7 @@ public class SocksHttpMainActivity extends BaseActivity
 			SharedPreferences prefsPrivate = new Settings(activity).getPrefsPrivate();
 
 			if (ConfigParser.isValidadeExpirou(prefsPrivate
-					.getLong(Settings.CONFIG_VALIDADE_KEY, 0))) {
+					.getLong(Settings.CONFIG_VALIDITY_KEY, 0))) {
 				resId = R.string.expired;
 				starterButton.setEnabled(false);
 
@@ -481,7 +460,7 @@ public class SocksHttpMainActivity extends BaseActivity
 					startOrStopTunnel(activity);
 				}
 			}
-			else if (prefsPrivate.getBoolean(Settings.BLOQUEAR_ROOT_KEY, false) &&
+			else if (prefsPrivate.getBoolean(Settings.BLOCK_ROOT_KEY, false) &&
 					ConfigParser.isDeviceRooted(activity)) {
 			   resId = R.string.blocked;
 			   starterButton.setEnabled(false);
@@ -540,7 +519,7 @@ public class SocksHttpMainActivity extends BaseActivity
 				break;
 
 			case R.id.activity_mainInputProxyLayout:
-				if (!prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+				if (!prefs.getBoolean(Settings.CONFIG_PROTECT_KEY, false)) {
 					doSaveData();
 
 					DialogFragment fragProxy = new ProxyRemoteDialogFragment();
@@ -576,12 +555,12 @@ public class SocksHttpMainActivity extends BaseActivity
 
 		switch (p1.getCheckedRadioButtonId()) {
 			case R.id.activity_mainSSHDirectRadioButton:
-				edit.putInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT);
+				edit.putInt(Settings.TUNNEL_TYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT);
 				proxyInputLayout.setVisibility(View.GONE);
 				break;
 
 			case R.id.activity_mainSSHProxyRadioButton:
-				edit.putInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_PROXY);
+				edit.putInt(Settings.TUNNEL_TYPE_KEY, Settings.bTUNNEL_TYPE_SSH_PROXY);
 				proxyInputLayout.setVisibility(View.VISIBLE);
 				break;
 		}
@@ -600,8 +579,8 @@ public class SocksHttpMainActivity extends BaseActivity
 
 		switch (p1.getId()) {
 			case R.id.activity_mainCustomPayloadSwitch:
-				edit.putBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, !p2);
-				setPayloadSwitch(prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT), p2);
+				edit.putBoolean(Settings.USE_DEFAULT_PROXY_PAYLOAD, !p2);
+				setPayloadSwitch(prefs.getInt(Settings.TUNNEL_TYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT), p2);
 				break;
 		}
 
@@ -742,7 +721,7 @@ public class SocksHttpMainActivity extends BaseActivity
 					Toast.makeText(this, R.string.error_tunnel_service_execution,
 						Toast.LENGTH_SHORT).show();
 				}
-				else if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+				else if (prefs.getBoolean(Settings.CONFIG_PROTECT_KEY, false)) {
 					Toast.makeText(this, R.string.error_settings_blocked,
 						Toast.LENGTH_SHORT).show();
 				}

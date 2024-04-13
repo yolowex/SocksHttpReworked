@@ -7,8 +7,7 @@ import android.view.LayoutInflater;
 import com.slipkprojects.sockshttp.R;
 import android.view.View;
 import android.support.v7.app.AlertDialog;
-import android.content.DialogInterface;
-import android.widget.EditText;
+
 import com.slipkprojects.sockshttp.SocksHttpMainActivity;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import com.slipkprojects.ultrasshservice.config.Settings;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.content.SharedPreferences;
 
@@ -46,8 +44,8 @@ public class ProxyRemoteDialogFragment extends DialogFragment
 		mConfig = new Settings(getContext());
 		SharedPreferences prefs = mConfig.getPrefsPrivate();
 		
-		usarPayloadPadrao = prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true);
-		usarProxyAutenticacao = prefs.getBoolean(Settings.PROXY_USAR_AUTENTICACAO_KEY, false);
+		usarPayloadPadrao = prefs.getBoolean(Settings.USE_DEFAULT_PROXY_PAYLOAD, true);
+		usarProxyAutenticacao = prefs.getBoolean(Settings.PROXY_USE_AUTHENTICATION_KEY, false);
 	}
 
 	@Override
@@ -88,8 +86,8 @@ public class ProxyRemoteDialogFragment extends DialogFragment
 		
 		proxyRemotoIpEdit.setText(mConfig.getPrivString(Settings.PROXY_IP_KEY));
 		
-		if (!mConfig.getPrivString(Settings.PROXY_PORTA_KEY).isEmpty())
-			proxyRemotoPortaEdit.setText(mConfig.getPrivString(Settings.PROXY_PORTA_KEY));
+		if (!mConfig.getPrivString(Settings.PROXY_PORT_KEY).isEmpty())
+			proxyRemotoPortaEdit.setText(mConfig.getPrivString(Settings.PROXY_PORT_KEY));
 		
 		proxyAutenticacaoCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
@@ -145,10 +143,10 @@ public class ProxyRemoteDialogFragment extends DialogFragment
 				else {
 					SharedPreferences.Editor edit = mConfig.getPrefsPrivate().edit();
 					
-					edit.putBoolean(Settings.PROXY_USAR_AUTENTICACAO_KEY, usarProxyAutenticacao);
+					edit.putBoolean(Settings.PROXY_USE_AUTHENTICATION_KEY, usarProxyAutenticacao);
 
 					edit.putString(Settings.PROXY_IP_KEY, proxy_ip);
-					edit.putString(Settings.PROXY_PORTA_KEY, proxy_porta);
+					edit.putString(Settings.PROXY_PORT_KEY, proxy_porta);
 
 					edit.apply();
 					

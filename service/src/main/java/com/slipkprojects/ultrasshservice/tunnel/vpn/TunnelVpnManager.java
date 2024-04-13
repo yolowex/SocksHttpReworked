@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.VpnService;
 import android.os.Build;
-import android.os.IBinder;
 import android.util.Log;
 
 import java.util.concurrent.CountDownLatch;
@@ -265,7 +264,7 @@ public class TunnelVpnManager implements Tunnel.HostService
 	{
 		SharedPreferences prefs = new Settings(getContext()).getPrefsPrivate();
 		
-		if (prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+		if (prefs.getBoolean(Settings.CONFIG_PROTECT_KEY, false)) {
 			for (String ip : mSettings.mExcludeIps) {
 				message = message.replace(ip, "********");
 			}

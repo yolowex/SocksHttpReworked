@@ -13,7 +13,7 @@ import com.slipkprojects.ultrasshservice.tunnel.vpn.TunnelState;
 import android.content.Intent;
 import com.slipkprojects.ultrasshservice.tunnel.vpn.TunnelVpnSettings;
 import android.content.BroadcastReceiver;
-import com.slipkprojects.ultrasshservice.SocksHttpService;
+
 import com.slipkprojects.ultrasshservice.tunnel.vpn.TunnelVpnManager;
 import com.slipkprojects.ultrasshservice.config.Settings;
 import android.os.Handler;
@@ -27,7 +27,6 @@ import java.io.StringWriter;
 import java.io.PrintWriter;
 import java.io.File;
 import com.trilead.ssh2.KnownHosts;
-import com.slipkprojects.ultrasshservice.config.SettingsConstants;
 import com.trilead.ssh2.ProxyData;
 import com.trilead.ssh2.DynamicPortForwarder;
 import com.trilead.ssh2.ConnectionMonitor;
@@ -40,9 +39,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.ProxyInfo;
 import android.os.Build;
-import android.net.NetworkRequest;
-import android.net.NetworkCapabilities;
-import android.net.Network;
 
 public class TunnelManagerThread
 	implements Runnable, ConnectionMonitor, InteractiveCallback,
@@ -228,15 +224,15 @@ public class TunnelManagerThread
 		mStopping = false;
 		mRunning = true;
 		
-		String servidor = mConfig.getPrivString(Settings.SERVIDOR_KEY);
-		int porta = Integer.parseInt(mConfig.getPrivString(Settings.SERVIDOR_PORTA_KEY));
-		String usuario = mConfig.getPrivString(Settings.USUARIO_KEY);
+		String servidor = mConfig.getPrivString(Settings.SSH_SERVER_ADDRESS);
+		int porta = Integer.parseInt(mConfig.getPrivString(Settings.SSH_SERVER_PORT));
+		String usuario = mConfig.getPrivString(Settings.SSH_USER);
 		
-		String _senha = mConfig.getPrivString(Settings.SENHA_KEY);
+		String _senha = mConfig.getPrivString(Settings.SSH_PASS);
 		String senha = _senha.isEmpty() ? PasswordCache.getAuthPassword(null, false) : _senha;
 		
 		String keyPath = mConfig.getSSHKeypath();
-		int portaLocal = Integer.parseInt(mConfig.getPrivString(Settings.PORTA_LOCAL_KEY));
+		int portaLocal = Integer.parseInt(mConfig.getPrivString(Settings.LOCAL_PORT_KEY));
 
 		try {
 			
@@ -303,7 +299,7 @@ public class TunnelManagerThread
 
 			mConnection = new Connection(servidor, porta);
 
-			if (mConfig.getModoDebug() && !prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
+			if (mConfig.getModoDebug() && !prefs.getBoolean(Settings.CONFIG_PROTECT_KEY, false)) {
 				// Desativado, pois estava enchendo o Logger
 				//mConnection.enableDebugging(true, this);
 				mHandler.post(new Runnable() {
@@ -321,8 +317,8 @@ public class TunnelManagerThread
 			}
 
 			// proxy
-			addProxy(prefs.getBoolean(Settings.CONFIG_PROTEGER_KEY, false), prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT),
-				(!prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true) ? mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY) : null),
+			addProxy(prefs.getBoolean(Settings.CONFIG_PROTECT_KEY, false), prefs.getInt(Settings.TUNNEL_TYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT),
+				(!prefs.getBoolean(Settings.USE_DEFAULT_PROXY_PAYLOAD, true) ? mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY) : null),
 					mConnection);
 
 			// monitora a conexão
@@ -451,7 +447,7 @@ public class TunnelManagerThread
 		for (int i = 0; i < numPrompts; i++) {
 			// request response from user for each prompt
 			if (prompt[i].toLowerCase().contains("password"))
-				responses[i] = mConfig.getPrivString(Settings.SENHA_KEY);
+				responses[i] = mConfig.getPrivString(Settings.SSH_PASS);
 		}
 		return responses;
 	}
@@ -494,7 +490,7 @@ public class TunnelManagerThread
 				case Settings.bTUNNEL_TYPE_SSH_DIRECT:
 					if (mCustomPayload != null) {
 						try {
-							ProxyData proxyData = new HttpProxyCustom(mConfig.getPrivString(Settings.SERVIDOR_KEY), Integer.parseInt(mConfig.getPrivString(Settings.SERVIDOR_PORTA_KEY)),
+							ProxyData proxyData = new HttpProxyCustom(mConfig.getPrivString(Settings.SSH_SERVER_ADDRESS), Integer.parseInt(mConfig.getPrivString(Settings.SSH_SERVER_PORT)),
 								null, null, mCustomPayload, true, mContext);
 
 							conn.setProxyData(proxyData);
@@ -519,7 +515,7 @@ public class TunnelManagerThread
 					}
 
 					String servidor = mConfig.getPrivString(Settings.PROXY_IP_KEY);
-					int porta = Integer.parseInt(mConfig.getPrivString(Settings.PROXY_PORTA_KEY));
+					int porta = Integer.parseInt(mConfig.getPrivString(Settings.PROXY_PORT_KEY));
 
 					try {
 						ProxyData proxyData = new HttpProxyCustom(servidor, porta,
@@ -808,13 +804,13 @@ public class TunnelManagerThread
 		LocalBroadcastManager.getInstance(mContext)
 			.registerReceiver(m_vpnTunnelBroadcastReceiver, broadcastFilter);
 
-		String m_socksServerAddress = String.format("127.0.0.1:%s", mConfig.getPrivString(Settings.PORTA_LOCAL_KEY));
+		String m_socksServerAddress = String.format("127.0.0.1:%s", mConfig.getPrivString(Settings.LOCAL_PORT_KEY));
 		boolean m_dnsForward = mConfig.getVpnDnsForward();
 		String m_udpResolver = mConfig.getVpnUdpForward() ? mConfig.getVpnUdpResolver() : null;
 
-		String servidorIP = mConfig.getPrivString(Settings.SERVIDOR_KEY);
+		String servidorIP = mConfig.getPrivString(Settings.SSH_SERVER_ADDRESS);
 
-		if (prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT) == Settings.bTUNNEL_TYPE_SSH_PROXY) {
+		if (prefs.getInt(Settings.TUNNEL_TYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT) == Settings.bTUNNEL_TYPE_SSH_PROXY) {
 			try {
 				servidorIP = mConfig.getPrivString(Settings.PROXY_IP_KEY);
 			} catch(Exception e) {

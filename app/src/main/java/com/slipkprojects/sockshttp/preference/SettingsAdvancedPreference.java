@@ -2,28 +2,19 @@ package com.slipkprojects.sockshttp.preference;
 
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.os.Bundle;
-import android.view.View;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.support.v7.preference.Preference;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.preference.EditTextPreference;
 import android.widget.Toast;
-import android.view.View.OnClickListener;
 import android.content.SharedPreferences;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.CheckBoxPreference;
 import android.content.Intent;
-import com.slipkprojects.sockshttp.SocksHttpApp;
+
 import com.slipkprojects.sockshttp.R;
 import com.slipkprojects.ultrasshservice.logger.SkStatus;
 import com.slipkprojects.ultrasshservice.config.SettingsConstants;
 import com.slipkprojects.ultrasshservice.config.Settings;
 import com.slipkprojects.ultrasshservice.logger.ConnectionStatus;
-import android.os.Handler;
+
 import android.support.v7.preference.ListPreference;
-import android.support.v7.app.AppCompatDelegate;
-import android.content.Context;
 import android.os.Build;
 
 public class SettingsAdvancedPreference extends PreferenceFragmentCompat
@@ -47,15 +38,15 @@ public class SettingsAdvancedPreference extends PreferenceFragmentCompat
 			findPreference(MAXIMO_THREADS_KEY);
 		numberMaxThreads.setOnPreferenceChangeListener(this);*/
 		
-		CheckBoxPreference checkDebug = (CheckBoxPreference) findPreference(MODO_DEBUG_KEY);
+		CheckBoxPreference checkDebug = (CheckBoxPreference) findPreference(MODE_DEBUG_KEY);
 		checkDebug.setOnPreferenceChangeListener(this);
 		
 		// update views
 		getPreferenceScreen().setEnabled(!SkStatus.isTunnelActive());
 		if (!SkStatus.isTunnelActive()) {
 			if (new Settings(getContext()).getPrefsPrivate()
-					.getBoolean(Settings.CONFIG_PROTEGER_KEY, false)) {
-				findPreference(MODO_DEBUG_KEY).setEnabled(false);
+					.getBoolean(Settings.CONFIG_PROTECT_KEY, false)) {
+				findPreference(MODE_DEBUG_KEY).setEnabled(false);
 			}
 		}
 		
@@ -115,7 +106,7 @@ public class SettingsAdvancedPreference extends PreferenceFragmentCompat
 	public boolean onPreferenceChange(Preference pref, Object newValue)
 	{
 		switch(pref.getKey()) {
-			case MODO_DEBUG_KEY:
+			case MODE_DEBUG_KEY:
 				boolean isDebug = (boolean) newValue;
 
 				if (isDebug) {

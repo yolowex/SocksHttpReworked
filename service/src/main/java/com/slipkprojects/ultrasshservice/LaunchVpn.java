@@ -15,20 +15,13 @@ import android.widget.Toast;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelUtils;
 import android.widget.EditText;
 import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.annotation.SuppressLint;
 import android.widget.CheckBox;
-import android.support.v4.widget.CompoundButtonCompat;
-import android.widget.CompoundButton;
 import android.content.DialogInterface;
-import android.view.View.OnClickListener;
-import android.content.Context;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
-import android.os.RemoteException;
+
 import com.slipkprojects.ultrasshservice.config.PasswordCache;
 import android.content.SharedPreferences;
 import android.widget.ImageButton;
@@ -89,8 +82,8 @@ public class LaunchVpn extends AppCompatActivity
 		final View userpwlayout = getLayoutInflater()
 			.inflate(R.layout.userpass, null, false);
 
-        ((EditText) userpwlayout.findViewById(R.id.username)).setText(mConfig.getPrivString(Settings.USUARIO_KEY));
-        ((EditText) userpwlayout.findViewById(R.id.password)).setText(mConfig.getPrivString(Settings.SENHA_KEY));
+        ((EditText) userpwlayout.findViewById(R.id.username)).setText(mConfig.getPrivString(Settings.SSH_USER));
+        ((EditText) userpwlayout.findViewById(R.id.password)).setText(mConfig.getPrivString(Settings.SSH_PASS));
         ((CheckBox) userpwlayout.findViewById(R.id.save_password)).setChecked(true);
         ((ImageButton) userpwlayout.findViewById(R.id.show_password)).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -119,13 +112,13 @@ public class LaunchVpn extends AppCompatActivity
 						
 						String mUsername = ((EditText) userpwlayout.findViewById(R.id.username)).getText().toString();
 						
-						edit.putString(Settings.USUARIO_KEY, mUsername);
+						edit.putString(Settings.SSH_USER, mUsername);
 						
 						String pw = ((EditText) userpwlayout.findViewById(R.id.password)).getText().toString();
 						if (((CheckBox) userpwlayout.findViewById(R.id.save_password)).isChecked()) {
-							edit.putString(Settings.SENHA_KEY, pw);
+							edit.putString(Settings.SSH_PASS, pw);
 						} else {
-							edit.remove(Settings.SENHA_KEY);
+							edit.remove(Settings.SSH_PASS);
 							mTransientAuthPW = pw;
 						}
 						
@@ -182,8 +175,8 @@ public class LaunchVpn extends AppCompatActivity
 
 					finish();
 				}
-				else if (prefs.getInt(Settings.TUNNELTYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT) == Settings.bTUNNEL_TYPE_SSH_PROXY &&
-						(mConfig.getPrivString(Settings.PROXY_IP_KEY).isEmpty() || mConfig.getPrivString(Settings.PROXY_PORTA_KEY).isEmpty())) {
+				else if (prefs.getInt(Settings.TUNNEL_TYPE_KEY, Settings.bTUNNEL_TYPE_SSH_DIRECT) == Settings.bTUNNEL_TYPE_SSH_PROXY &&
+						(mConfig.getPrivString(Settings.PROXY_IP_KEY).isEmpty() || mConfig.getPrivString(Settings.PROXY_PORT_KEY).isEmpty())) {
 					SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
 						ConnectionStatus.LEVEL_NOTCONNECTED);
 
@@ -192,7 +185,7 @@ public class LaunchVpn extends AppCompatActivity
 
 					finish();
 				}
-				else if (!prefs.getBoolean(Settings.PROXY_USAR_DEFAULT_PAYLOAD, true) && mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY).isEmpty()) {
+				else if (!prefs.getBoolean(Settings.USE_DEFAULT_PROXY_PAYLOAD, true) && mConfig.getPrivString(Settings.CUSTOM_PAYLOAD_KEY).isEmpty()) {
 					SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
 						ConnectionStatus.LEVEL_NOTCONNECTED);
 					
@@ -201,7 +194,7 @@ public class LaunchVpn extends AppCompatActivity
 
 					finish();
 				}
-				else if (mConfig.getPrivString(Settings.SERVIDOR_KEY).isEmpty() || mConfig.getPrivString(Settings.SERVIDOR_PORTA_KEY).isEmpty()) {
+				else if (mConfig.getPrivString(Settings.SSH_SERVER_ADDRESS).isEmpty() || mConfig.getPrivString(Settings.SSH_SERVER_PORT).isEmpty()) {
 					SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
 						ConnectionStatus.LEVEL_NOTCONNECTED);
 					
@@ -216,7 +209,7 @@ public class LaunchVpn extends AppCompatActivity
 
 					finish();
 				}
-            	else if (mConfig.getPrivString(Settings.USUARIO_KEY).isEmpty() || (mConfig.getPrivString(Settings.SENHA_KEY).isEmpty() &&
+            	else if (mConfig.getPrivString(Settings.SSH_USER).isEmpty() || (mConfig.getPrivString(Settings.SSH_PASS).isEmpty() &&
 						(mTransientAuthPW == null || mTransientAuthPW.isEmpty()))) {
                     SkStatus.updateStateString("USER_VPN_PASSWORD", "", R.string.state_user_vpn_password,
 						ConnectionStatus.LEVEL_WAITING_FOR_USER_INPUT);

@@ -2,37 +2,25 @@ package com.slipkprojects.sockshttp.preference;
 
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.os.Bundle;
-import android.view.View;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.support.v7.preference.Preference;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.preference.EditTextPreference;
-import android.widget.Toast;
-import android.view.View.OnClickListener;
 import android.content.SharedPreferences;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.CheckBoxPreference;
 import android.content.Intent;
 import com.slipkprojects.sockshttp.SocksHttpApp;
 import com.slipkprojects.sockshttp.R;
 import android.support.v7.preference.ListPreference;
 import android.content.Context;
-import android.support.v7.app.AppCompatDelegate;
+
 import com.slipkprojects.ultrasshservice.logger.SkStatus;
 import com.slipkprojects.ultrasshservice.config.SettingsConstants;
 import com.slipkprojects.ultrasshservice.config.Settings;
-import android.support.v7.preference.PreferenceScreen;
 import com.slipkprojects.ultrasshservice.logger.ConnectionStatus;
 import android.os.Handler;
-import android.app.Activity;
+
 import com.slipkprojects.sockshttp.LauncherActivity;
 import android.app.PendingIntent;
 import android.app.AlarmManager;
-import android.os.Build;
-import android.support.v7.app.AlertDialog;
-import com.slipkprojects.sockshttp.SocksHttpMainActivity;
-import android.support.v4.content.LocalBroadcastManager;
 
 public class SettingsPreference extends PreferenceFragmentCompat
 	implements Preference.OnPreferenceChangeListener, SettingsConstants,
@@ -46,15 +34,15 @@ public class SettingsPreference extends PreferenceFragmentCompat
 		ADVANCED_SCREEN_PREFERENCE_KEY = "screenAdvancedSettings";
 		
 	private String[] settings_disabled_keys = {
-		DNSFORWARD_KEY,
-		DNSRESOLVER_KEY,
-		UDPFORWARD_KEY,
-		UDPRESOLVER_KEY,
-		PINGER_KEY,
+			DNS_FORWARD_KEY,
+			DNS_RESOLVER_KEY,
+			UDP_FORWARD_KEY,
+			UDP_RESOLVER_KEY,
+			PING_KEY,
 		AUTO_CLEAR_LOGS_KEY,
 		HIDE_LOG_KEY,
-		MODO_NOTURNO_KEY,
-		IDIOMA_KEY
+			MODE_IS_NIGHT_KEY,
+			LANGUAGE_KEY
 	};
 
 	@Override
@@ -91,20 +79,20 @@ public class SettingsPreference extends PreferenceFragmentCompat
 		mPref = getPreferenceManager().getDefaultSharedPreferences(getContext());
 		
 		Preference udpForwardPreference = (CheckBoxPreference)
-			findPreference(UDPFORWARD_KEY);
+			findPreference(UDP_FORWARD_KEY);
 		udpForwardPreference.setOnPreferenceChangeListener(this);
 		
 		Preference dnsForwardPreference = (CheckBoxPreference)
-			findPreference(DNSFORWARD_KEY);
+			findPreference(DNS_FORWARD_KEY);
 		dnsForwardPreference.setOnPreferenceChangeListener(this);
 		
 		ListPreference modoNoturno = (ListPreference)
-			findPreference(MODO_NOTURNO_KEY);
+			findPreference(MODE_IS_NIGHT_KEY);
 		modoNoturno.setOnPreferenceChangeListener(this);
 		SettingsAdvancedPreference.setListPreferenceSummary(modoNoturno, modoNoturno.getValue());
 		
 		ListPreference idioma = (ListPreference)
-			findPreference(IDIOMA_KEY);
+			findPreference(LANGUAGE_KEY);
 		idioma.setOnPreferenceChangeListener(this);
 		SettingsAdvancedPreference.setListPreferenceSummary(idioma, idioma.getValue());
 		
@@ -114,9 +102,9 @@ public class SettingsPreference extends PreferenceFragmentCompat
 	
 	private void onChangeUseVpn(boolean use_vpn){
 		Preference udpResolverPreference = (EditTextPreference)
-			findPreference(UDPRESOLVER_KEY);
+			findPreference(UDP_RESOLVER_KEY);
 		Preference dnsResolverPreference = (EditTextPreference)
-			findPreference(DNSRESOLVER_KEY);
+			findPreference(DNS_RESOLVER_KEY);
 		
 		for (String key : settings_disabled_keys){
 			getPreferenceManager().findPreference(key)
@@ -125,18 +113,18 @@ public class SettingsPreference extends PreferenceFragmentCompat
 
 		use_vpn = true;
 		if (use_vpn) {
-			boolean isUdpForward = mPref.getBoolean(UDPFORWARD_KEY, false);
-			boolean isDnsForward = mPref.getBoolean(DNSFORWARD_KEY, false);
+			boolean isUdpForward = mPref.getBoolean(UDP_FORWARD_KEY, false);
+			boolean isDnsForward = mPref.getBoolean(DNS_FORWARD_KEY, false);
 			
 			udpResolverPreference.setEnabled(isUdpForward);
 			dnsResolverPreference.setEnabled(isDnsForward);
 		}
 		else {
 			String[] list = {
-				UDPFORWARD_KEY,
-				UDPRESOLVER_KEY,
-				DNSFORWARD_KEY,
-				DNSRESOLVER_KEY
+					UDP_FORWARD_KEY,
+					UDP_RESOLVER_KEY,
+					DNS_FORWARD_KEY,
+					DNS_RESOLVER_KEY
 			};
 			for (String key : list) {
 				getPreferenceManager().findPreference(key)
@@ -167,26 +155,26 @@ public class SettingsPreference extends PreferenceFragmentCompat
 	public boolean onPreferenceChange(Preference pref, Object newValue)
 	{
 		switch (pref.getKey()) {
-			case UDPFORWARD_KEY:
+			case UDP_FORWARD_KEY:
 				boolean isUdpForward = (boolean) newValue;
 
 				Preference udpResolverPreference = (EditTextPreference)
-					findPreference(UDPRESOLVER_KEY);
+					findPreference(UDP_RESOLVER_KEY);
 				udpResolverPreference.setEnabled(isUdpForward);
 			break;
 			
-			case DNSFORWARD_KEY:
+			case DNS_FORWARD_KEY:
 				boolean isDnsForward = (boolean) newValue;
 
 				Preference dnsResolverPreference = (EditTextPreference)
-					findPreference(DNSRESOLVER_KEY);
+					findPreference(DNS_RESOLVER_KEY);
 				dnsResolverPreference.setEnabled(isDnsForward);
 			break;
 			
-			case MODO_NOTURNO_KEY:
+			case MODE_IS_NIGHT_KEY:
 				final String enableModoNoturno = (String)newValue;
 				
-				if (enableModoNoturno.equals(mPref.getString(MODO_NOTURNO_KEY, "off"))) {
+				if (enableModoNoturno.equals(mPref.getString(MODE_IS_NIGHT_KEY, "off"))) {
 					return false;
 				}
 
@@ -228,7 +216,7 @@ public class SettingsPreference extends PreferenceFragmentCompat
 				getActivity().finish();
 			return false;
 			
-			case IDIOMA_KEY:
+			case LANGUAGE_KEY:
 				final String lang = (String) newValue;
 				
 				if (((String)newValue).equals(new Settings(getContext())

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,27 +18,19 @@ import java.util.List;
 import com.slipkprojects.sockshttp.R;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
-import android.util.Log;
-import android.support.v4.content.LocalBroadcastManager;
 import android.net.Uri;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import com.slipkprojects.sockshttp.adapter.ManagerFilesAdapter;
-import com.slipkprojects.sockshttp.SocksHttpApp;
 import com.slipkprojects.ultrasshservice.logger.SkStatus;
-import com.slipkprojects.ultrasshservice.util.FileUtils;
 import com.slipkprojects.sockshttp.SocksHttpMainActivity;
 import com.slipkprojects.ultrasshservice.config.ConfigParser;
 import java.io.FileInputStream;
 import android.support.v7.app.AlertDialog;
-import java.text.DateFormat;
+
 import com.slipkprojects.sockshttp.LauncherActivity;
-import com.slipkprojects.sockshttp.preference.SettingsSSHPreference;
 import com.slipkprojects.ultrasshservice.config.Settings;
-import java.util.Map;
-import android.support.v4.util.ArrayMap;
 
 public class ConfigImportFileActivity extends BaseActivity implements ManagerFilesAdapter.OnItemClickListener {
 	private static final String TAG = ConfigImportFileActivity.class.getSimpleName();
@@ -356,7 +347,7 @@ public class ConfigImportFileActivity extends BaseActivity implements ManagerFil
 			}
 			
 			long mValidade = new Settings(this)
-				.getPrefsPrivate().getLong(Settings.CONFIG_VALIDADE_KEY, 0);
+				.getPrefsPrivate().getLong(Settings.CONFIG_VALIDITY_KEY, 0);
 			
 			if (mValidade > 0) {
 				SkStatus.logInfo(R.string.log_settings_valid,
