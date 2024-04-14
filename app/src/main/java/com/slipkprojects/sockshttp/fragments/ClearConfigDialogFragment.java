@@ -33,7 +33,7 @@ public class ClearConfigDialogFragment extends DialogFragment {
 					// limpa logs
 					SkStatus.clearLog();
 					
-					SocksHttpMainActivity.updateMainViews(getContext());
+//					SocksHttpMainActivity.updateMainViews(getContext());
 					
 					Toast.makeText(getActivity(), R.string.success_clear_settings, Toast.LENGTH_SHORT)
 						.show();

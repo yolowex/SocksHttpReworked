@@ -150,7 +150,7 @@ public class ProxyRemoteDialogFragment extends DialogFragment
 
 					edit.apply();
 					
-					SocksHttpMainActivity.updateMainViews(getContext());
+//					SocksHttpMainActivity.updateMainViews(getContext());
 
 					dismiss();
 				}

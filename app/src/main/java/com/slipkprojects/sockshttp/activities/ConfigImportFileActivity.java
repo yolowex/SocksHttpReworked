@@ -358,7 +358,7 @@ public class ConfigImportFileActivity extends BaseActivity implements ManagerFil
 				.show();
 				
 			// atualiza views
-			SocksHttpMainActivity.updateMainViews(this);
+//			SocksHttpMainActivity.updateMainViews(this);
 			
 		} catch(IOException e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT)
