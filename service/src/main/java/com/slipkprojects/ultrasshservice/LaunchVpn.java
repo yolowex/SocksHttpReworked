@@ -194,21 +194,21 @@ public class LaunchVpn extends AppCompatActivity
 
 					finish();
 				}
-				else if (mConfig.getPrivString(Settings.SSH_SERVER_ADDRESS).isEmpty() || mConfig.getPrivString(Settings.SSH_SERVER_PORT).isEmpty()) {
-					SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
-						ConnectionStatus.LEVEL_NOTCONNECTED);
-					
-					Toast.makeText(this, R.string.error_empty_settings,
-						Toast.LENGTH_SHORT).show();
-
-					Intent startLW = new Intent();
-        			startLW.setComponent(new ComponentName(this, getPackageName() + ".activities.ConfigGeralActivity"));
-        			startLW.setAction("openSSHScreen");
-					startLW.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					startActivity(startLW);
-
-					finish();
-				}
+//				else if (mConfig.getPrivString(Settings.SSH_SERVER_ADDRESS).isEmpty() || mConfig.getPrivString(Settings.SSH_SERVER_PORT).isEmpty()) {
+//					SkStatus.updateStateString("USER_VPN_PASSWORD_CANCELLED", "", R.string.state_user_vpn_password_cancelled,
+//						ConnectionStatus.LEVEL_NOTCONNECTED);
+//					// This block runs when configuration is invalid
+//					Toast.makeText(this, R.string.error_empty_settings,
+//						Toast.LENGTH_SHORT).show();
+//
+//					Intent startLW = new Intent();
+//        			startLW.setComponent(new ComponentName(this, getPackageName() + ".activities.ConfigGeralActivity"));
+//        			startLW.setAction("openSSHScreen");
+//					startLW.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//					startActivity(startLW);
+//
+//					finish();
+//				}
             	else if (mConfig.getPrivString(Settings.SSH_USER).isEmpty() || (mConfig.getPrivString(Settings.SSH_PASS).isEmpty() &&
 						(mTransientAuthPW == null || mTransientAuthPW.isEmpty()))) {
                     SkStatus.updateStateString("USER_VPN_PASSWORD", "", R.string.state_user_vpn_password,
