@@ -6,13 +6,13 @@ import com.slipkprojects.ultrasshservice.logger.SkStatus;
 import android.app.Activity;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelManagerHelper;
 import com.slipkprojects.ultrasshservice.LaunchVpn;
-import com.slipkprojects.sockshttp.activities.BaseActivity;
+
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
 
-public class SocksHttpMainActivity extends BaseActivity
+public class SocksHttpMainActivity extends Activity
 {
 	private static final String TAG = SocksHttpMainActivity.class.getSimpleName();
 
