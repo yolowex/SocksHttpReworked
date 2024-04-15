@@ -24,7 +24,7 @@ android {
 
 dependencies {
     
-	implementation 'com.android.support:appcompat-v7:25.+'
+	implementation 'com.android.support:appcompat-v7:28.0.0'
 	
     implementation 'net.i2p.crypto:eddsa:0.3.0'
 	implementation 'org.connectbot.jbcrypt:jbcrypt:1.0.0'
