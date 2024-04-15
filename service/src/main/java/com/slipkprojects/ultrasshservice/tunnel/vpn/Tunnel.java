@@ -19,35 +19,17 @@
  
 package com.slipkprojects.ultrasshservice.tunnel.vpn;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import android.net.LocalSocket;
-import android.net.LocalSocketAddress;
-import java.io.FileDescriptor;
-import java.io.File;
-import java.util.ArrayList;
-import android.system.OsConstants;
 import java.util.Iterator;
 import java.util.Collection;
-import android.content.Intent;
-import android.app.PendingIntent;
 import com.slipkprojects.ultrasshservice.logger.SkStatus;
 import com.slipkprojects.ultrasshservice.SocksHttpService;
 import android.content.pm.PackageManager;

@@ -1,14 +1,6 @@
 package com.slipkprojects.ultrasshservice.util;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import android.util.Log;
-import android.widget.Toast;
-import com.slipkprojects.ultrasshservice.BuildConfig;
 import com.slipkprojects.ultrasshservice.R;
 
 /**

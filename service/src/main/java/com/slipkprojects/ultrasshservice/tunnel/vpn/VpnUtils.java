@@ -1,7 +1,6 @@
 package com.slipkprojects.ultrasshservice.tunnel.vpn;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import java.io.BufferedReader;
 import java.io.File;

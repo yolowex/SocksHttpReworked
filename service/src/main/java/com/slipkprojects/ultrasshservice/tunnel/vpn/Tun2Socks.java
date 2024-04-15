@@ -1,24 +1,13 @@
 package com.slipkprojects.ultrasshservice.tunnel.vpn;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 
-import java.net.DatagramSocket;
-import java.net.Socket;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.File;
 import android.net.LocalSocket;
 import android.net.LocalSocketAddress;
 import java.io.FileDescriptor;
 import android.content.Context;
-import java.util.Iterator;
 import com.slipkprojects.ultrasshservice.util.StreamGobbler;
 import android.support.v4.content.ContextCompat;
 import com.slipkprojects.ultrasshservice.logger.SkStatus;

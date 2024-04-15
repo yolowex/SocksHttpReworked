@@ -2,13 +2,9 @@ package com.slipkprojects.ultrasshservice.tunnel.vpn;
 
 import java.io.File;
 import android.util.Log;
-import java.io.BufferedReader;
 import android.content.Context;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.FileReader;
 
 import com.slipkprojects.ultrasshservice.R;
 import com.slipkprojects.ultrasshservice.util.StreamGobbler;
