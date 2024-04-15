@@ -7,7 +7,7 @@ import android.app.Activity;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelManagerHelper;
 import com.slipkprojects.ultrasshservice.LaunchVpn;
 
-import android.support.annotation.Nullable;
+//import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
@@ -17,7 +17,7 @@ public class SocksHttpMainActivity extends Activity
 	private static final String TAG = SocksHttpMainActivity.class.getSimpleName();
 
 	@Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate( Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_activity);
 	}

@@ -1,11 +1,9 @@
 package com.slipkprojects.sockshttp;
 
 import android.app.Application;
-import android.support.v7.app.AppCompatDelegate;
 import com.slipkprojects.ultrasshservice.util.SkProtect;
 import android.content.Context;
 import com.slipkprojects.ultrasshservice.SocksHttpCore;
-import com.slipkprojects.ultrasshservice.config.Settings;
 import android.content.res.Configuration;
 
 /**
