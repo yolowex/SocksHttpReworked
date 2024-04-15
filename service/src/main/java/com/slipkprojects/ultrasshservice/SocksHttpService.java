@@ -326,14 +326,14 @@ implements SkStatus.StateListener
 
 		Intent reconnectVPN = new Intent(this, MainReceiver.class);
 		reconnectVPN.setAction(MainReceiver.ACTION_SERVICE_RESTART);
-      	PendingIntent reconnectPendingIntent = PendingIntent.getBroadcast(this, 0, reconnectVPN, PendingIntent.FLAG_CANCEL_CURRENT);
+      	PendingIntent reconnectPendingIntent = PendingIntent.getBroadcast(this, 0, reconnectVPN, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
 		nbuilder.addAction(R.drawable.ic_autorenew_black_24dp,
 						   getString(R.string.reconnect), reconnectPendingIntent);
 
 		Intent disconnectVPN = new Intent(this, MainReceiver.class);
 		disconnectVPN.setAction(MainReceiver.ACTION_SERVICE_STOP);
-      	PendingIntent disconnectPendingIntent = PendingIntent.getBroadcast(this, 0, disconnectVPN, PendingIntent.FLAG_CANCEL_CURRENT);
+      	PendingIntent disconnectPendingIntent = PendingIntent.getBroadcast(this, 0, disconnectVPN, PendingIntent.FLAG_CANCEL_CURRENT| PendingIntent.FLAG_IMMUTABLE);
 
         nbuilder.addAction(R.drawable.ic_power_settings_new_black_24dp,
 						   getString(R.string.stop), disconnectPendingIntent);
@@ -362,7 +362,7 @@ implements SkStatus.StateListener
         intent.setComponent(new ComponentName(context, context.getPackageName() + ".SocksHttpMainActivity"));
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
-		PendingIntent startLW = PendingIntent.getActivity(context, 0, intent, 0);
+		PendingIntent startLW = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
 		return startLW;
     }
