@@ -3,7 +3,8 @@ package com.slipkprojects.ultrasshservice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.BroadcastReceiver;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.slipkprojects.ultrasshservice.tunnel.TunnelManagerHelper;
 
 public class MainReceiver extends BroadcastReceiver

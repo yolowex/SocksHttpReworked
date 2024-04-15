@@ -5,7 +5,8 @@ import java.io.IOException;
 import com.slipkprojects.ultrasshservice.logger.SkStatus;
 import android.content.IntentFilter;
 import com.slipkprojects.ultrasshservice.tunnel.vpn.TunnelVpnService;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import java.util.List;
 import com.slipkprojects.ultrasshservice.tunnel.vpn.VpnUtils;
 import android.util.Log;

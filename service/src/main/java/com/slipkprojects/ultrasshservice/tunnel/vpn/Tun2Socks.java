@@ -9,7 +9,9 @@ import android.net.LocalSocketAddress;
 import java.io.FileDescriptor;
 import android.content.Context;
 import com.slipkprojects.ultrasshservice.util.StreamGobbler;
-import android.support.v4.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import com.slipkprojects.ultrasshservice.logger.SkStatus;
 import com.slipkprojects.ultrasshservice.util.CustomNativeLoader;
 

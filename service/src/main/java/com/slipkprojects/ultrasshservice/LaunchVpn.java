@@ -14,18 +14,20 @@ import android.widget.Toast;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelUtils;
 import android.widget.EditText;
 import android.text.InputType;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.annotation.SuppressLint;
 import android.widget.CheckBox;
 import android.content.DialogInterface;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 
 import com.slipkprojects.ultrasshservice.config.PasswordCache;
 import android.content.SharedPreferences;
 import android.widget.ImageButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LaunchVpn extends AppCompatActivity
 	implements DialogInterface.OnCancelListener

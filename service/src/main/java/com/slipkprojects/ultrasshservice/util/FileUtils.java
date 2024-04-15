@@ -1,15 +1,15 @@
 package com.slipkprojects.ultrasshservice.util;
 
 // todo stuff context compat
-import android.support.v4.content.ContextCompat;
 import android.content.pm.PackageManager;
 // todo stuff activity compat
-import android.support.v4.app.ActivityCompat;
 import android.app.Activity;
 import android.Manifest;
 import android.content.DialogInterface;
 // todo stuff alert dialog
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.content.Context;
 import java.io.InputStream;
 import java.io.OutputStream;

@@ -20,7 +20,7 @@ import java.io.OutputStream;
 
 import android.content.SharedPreferences;
 
-import com.kimchangyoun.rootbeerFresh.RootBeer;
+//import com.kimchangyoun.rootbeerFresh.RootBeer;
 import com.slipkprojects.ultrasshservice.util.securepreferences.crypto.Cryptor;
 import com.slipkprojects.ultrasshservice.util.securepreferences.model.SecurityConfig;
 import com.slipkprojects.ultrasshservice.util.Cripto;
@@ -377,15 +377,15 @@ public class ConfigParser
         } finally {
             if (process != null) process.destroy();
         }*/
-		
-		RootBeer rootBeer = new RootBeer(context);
-		
-		boolean simpleTests = rootBeer.detectRootManagementApps() || rootBeer.detectPotentiallyDangerousApps() || rootBeer.checkForBinary("su")
-			|| rootBeer.checkForDangerousProps() || rootBeer.checkForRWPaths()
-			|| rootBeer.detectTestKeys() || rootBeer.checkSuExists() || rootBeer.checkForRootNative() || rootBeer.checkForMagiskBinary();
-		//boolean experiementalTests = rootBeer.checkForMagiskNative();
-			
-		return simpleTests;
+		return false;
+//		RootBeer rootBeer = new RootBeer(context);
+//
+//		boolean simpleTests = rootBeer.detectRootManagementApps() || rootBeer.detectPotentiallyDangerousApps() || rootBeer.checkForBinary("su")
+//			|| rootBeer.checkForDangerousProps() || rootBeer.checkForRWPaths()
+//			|| rootBeer.detectTestKeys() || rootBeer.checkSuExists() || rootBeer.checkForRootNative() || rootBeer.checkForMagiskBinary();
+//		//boolean experiementalTests = rootBeer.checkForMagiskNative();
+//
+//		return simpleTests;
 	}
 
 }

@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 import java.io.OutputStream;
 import java.io.IOException;
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 import java.util.Map;
 import java.util.Enumeration;
 import java.net.NetworkInterface;

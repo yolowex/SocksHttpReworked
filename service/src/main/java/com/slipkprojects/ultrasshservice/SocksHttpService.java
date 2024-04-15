@@ -8,7 +8,8 @@ import android.content.Context;
 import com.slipkprojects.ultrasshservice.logger.SkStatus;
 import android.os.Handler;
 import android.content.IntentFilter;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.slipkprojects.ultrasshservice.aidl.IUltraSSHServiceInternal;
 import android.annotation.TargetApi;
 import android.os.Build;
@@ -19,7 +20,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import android.app.PendingIntent;
 import android.content.ComponentName;
-import android.support.annotation.RequiresApi;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelUtils;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelManagerThread;
 import android.content.BroadcastReceiver;
@@ -256,7 +256,7 @@ implements SkStatus.StateListener
         mNotifyBuilder.setContentText(msg);
 
 		if (status == ConnectionStatus.LEVEL_WAITING_FOR_USER_INPUT) {
-            PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+            PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
             mNotifyBuilder.setContentIntent(pIntent);
         }
 		else {
@@ -321,7 +321,6 @@ implements SkStatus.StateListener
         }
     }
 
-	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void addVpnActionsToNotification(Notification.Builder nbuilder) {
 
 		Intent reconnectVPN = new Intent(this, MainReceiver.class);
