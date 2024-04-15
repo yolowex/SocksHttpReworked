@@ -1,18 +1,9 @@
 package com.slipkprojects.ultrasshservice;
 
-import android.app.Activity;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import android.content.Context;
 import java.io.File;
-import android.os.Environment;
-import android.content.Intent;
-import android.os.Handler;
-import android.app.PendingIntent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import com.slipkprojects.ultrasshservice.util.FileUtils;
 
 /**
 * Reporta erros

@@ -10,7 +10,6 @@ import android.os.Build;
 import com.slipkprojects.ultrasshservice.config.Settings;
 import android.net.VpnService;
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.widget.Toast;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelUtils;
 import android.widget.EditText;

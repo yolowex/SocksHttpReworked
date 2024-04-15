@@ -1,12 +1,9 @@
 package com.slipkprojects.ultrasshservice;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.BroadcastReceiver;
 import android.support.v4.content.LocalBroadcastManager;
-import com.slipkprojects.ultrasshservice.SocksHttpService;
 import com.slipkprojects.ultrasshservice.tunnel.TunnelManagerHelper;
 
 public class MainReceiver extends BroadcastReceiver
