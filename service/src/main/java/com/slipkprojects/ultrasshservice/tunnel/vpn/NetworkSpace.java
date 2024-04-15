@@ -6,7 +6,7 @@
 package com.slipkprojects.ultrasshservice.tunnel.vpn;
 
 import android.os.Build;
-import android.support.annotation.NonNull;
+
 
 import java.math.BigInteger;
 import java.net.Inet6Address;
@@ -41,7 +41,7 @@ public class NetworkSpace {
          * 2. smaller networks are returned as smaller
          */
         @Override
-        public int compareTo(@NonNull IpAddress another) {
+        public int compareTo(IpAddress another) {
             int comp = getFirstAddress().compareTo(another.getFirstAddress());
             if (comp != 0)
                 return comp;

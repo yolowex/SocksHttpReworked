@@ -8,12 +8,6 @@ import android.os.Build;
 import com.slipkprojects.ultrasshservice.R;
 import android.content.Intent;
 import android.content.Context;
-import android.os.Message;
-import java.io.File;
-import android.os.HandlerThread;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import java.util.Iterator;
 import java.util.Locale;
 
 public class SkStatus
